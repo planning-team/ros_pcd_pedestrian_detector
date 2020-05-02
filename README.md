@@ -31,7 +31,7 @@ cd ~/catkin_ws/
 catkin_make
 ```
 
-5. Run the following nodes (all in separate terminals):
+5. Run the following nodes (all in separate terminals):   
   a. Start a roscore
 ```bash
 roscore

@@ -32,7 +32,8 @@ catkin_make
 ```
 
 5. Run the following nodes (all in separate terminals):   
-  a. Start a roscore
+
+a. Start a roscore
 ```bash
 roscore
 ```

@@ -36,19 +36,19 @@ catkin_make
 ```bash
 roscore
 ```
-  a. play the bag file:
+  b. play the bag file:
 ```bash
 rosbag play PATH_TO_YOUR_BAG_FILE
 ```
-  b. This nodelet reads raw data from the /velodyne_packets ROS topic, converts to /sensor_msgs/PointCloud2 format, and republishes to /velodyne_points
+  c. This nodelet reads raw data from the /velodyne_packets ROS topic, converts to /sensor_msgs/PointCloud2 format, and republishes to /velodyne_points
 ```bash
 rosrun nodelet nodelet standalone velodyne_pointcloud/CloudNodelet _model:="VLP16" _calibration:="VLP16db.yaml"
 ```
-  c. Our pedestrian detector:
+  d. Our pedestrian detector:
 ```bash
 rosrun ros_pcd_pedestrian_detector pedestrian_detector.py
 ```
-  d. Run RViz to visualise the PointClouds
+  e. Run RViz to visualise the PointClouds
 ```bash
 rosrun rviz rviz -f velodyne
 ```

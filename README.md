@@ -6,6 +6,8 @@ The model is aimed to detect Pedestrians within indoor evrimonent on a data coll
 The node subscribed to the topic `/velodyne_points`. Recives `/sensor_msgs/PointCloud2` with XYZ
 and returns `/sensor_msgs/PointCloud2` with XYZ and "probability" to the topic `/velodyne_points_pedestrians`.
 
+![Screenshot from 2020-05-02 13-37-17](https://user-images.githubusercontent.com/38633753/80861996-79779400-8c7a-11ea-8d8b-32930f80fe2f.png)
+
 ### Usage
 
 To run a rosnode make the following:

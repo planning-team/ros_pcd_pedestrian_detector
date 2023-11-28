@@ -19,7 +19,7 @@ class Pcd2ImageTransform:
         self.x_delta, self.y_delta = x_angular / self.width, y_angular / self.height
     
     def fit_fast(self, xyz):
-	"""
+        """    
         Input: 
             xyz = np.array (Nx3) with X, Y, Z coordinates of a PointCloud
         Output:

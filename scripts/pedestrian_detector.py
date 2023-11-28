@@ -1,10 +1,11 @@
 #!/usr/bin/env python
 
+import os
+import time
+import sys
 import numpy as np
 import open3d
 import torch
-import os
-import time
 
 import config
 from tools import preprocess
@@ -18,23 +19,21 @@ import ros_numpy
 import sensor_msgs.point_cloud2 as pc2
 from sensor_msgs.msg import PointCloud2, PointField
 
-device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+# device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 pub = None
 model = None
 
-def model_loader(model_path):
+
+def model_loader(model_path: str, device: str):
     model = models.ResNetUNet(1)
-    if torch.cuda.is_available():
-        model.to(device)
-        model.load_state_dict(torch.load(model_path))
-    else:
-        model.load_state_dict(torch.load(model_path, map_location='cpu'))
-    model.eval()
+    model.load_state_dict(torch.load(model_path, map_location="cpu"))
+    model = model.to(device)
+    _ = model.eval()
     return model
 
 
-def callback(cloud_msg):
+def callback(cloud_msg, device: str):
     cloud_arr = ros_numpy.point_cloud2.pointcloud2_to_array(cloud_msg)
     xyz = ros_numpy.point_cloud2.get_xyz_points(cloud_arr, dtype=np.float32)
 
@@ -56,9 +55,19 @@ def callback(cloud_msg):
     cloud_msg_prob = ros_numpy.point_cloud2.array_to_pointcloud2(cloud_arr_new, frame_id='velodyne')
     pub.publish(cloud_msg_prob)
 
+
 if __name__ == '__main__':
-    model = model_loader("src/pcd_semantic_segmentation/scripts/model/UNet_best.pth")
     rospy.init_node('pedestrian_detector', anonymous=True)
+    
+    weights_path = rospy.get_param("~weights")
+    device = rospy.get_param("device", "cuda:0")
+    if not torch.cuda.is_available():
+        rospy.logerr_once("CUDA is not available, force switch to CPU")
+        device = "cpu"
+    
+    
+    model = model_loader(weights_path, device)
+    
     pub = rospy.Publisher('velodyne_points_pedestrians', PointCloud2, queue_size=10)
-    rospy.Subscriber('velodyne_points', PointCloud2, callback, queue_size=1, buff_size=2**24)
+    rospy.Subscriber('velodyne_points', PointCloud2, lambda msg: callback(msg, device), queue_size=1, buff_size=2**24)
     rospy.spin()

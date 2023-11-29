@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+
+<launch>
+    <arg name="onnx_model"/>
+
+    <node name="pedestrian_detector" type="pedestrian_detector_onnx.py" pkg="pcd_semantic_segmentation" output="screen">
+        <param name="onnx_model" value="$(arg onnx_model)"/>
+    </node>
+</launch>

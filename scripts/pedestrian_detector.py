@@ -1,9 +1,14 @@
 #!/usr/bin/env python
 
+import numpy as np
+
+np.int = int
+np.float = float
+
 import os
 import time
 import sys
-import numpy as np
+
 import open3d
 import torch
 

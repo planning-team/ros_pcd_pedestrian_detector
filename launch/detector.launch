@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+
+<launch>
+    <arg name="weights"/>
+    <arg name="device" default="cuda:0"/>
+
+    <node name="pedestrian_detector" type="pedestrian_detector.py" pkg="pcd_semantic_segmentation" output="screen">
+        <param name="weights" value="$(arg weights)"/>
+        <param name="device" value="$(arg device)"/>
+    </node>
+</launch>
